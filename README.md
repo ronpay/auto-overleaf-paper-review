@@ -2,26 +2,33 @@
 
 Automated daily review system that pulls LaTeX papers from Overleaf and uses Claude to identify critical errors (logical errors, insufficient rigor, formula mistakes). Results are sent via Telegram.
 
+Runs as a [Claude Code scheduled task](https://code.claude.com/docs/en/web-scheduled-tasks) — fully cloud-hosted, no local machine required.
+
+## Requirements
+
+- A [Claude Code](https://code.claude.com) account (Pro, Max, Team, or Enterprise)
+- Overleaf project(s) with git access enabled
+- A Telegram bot (create one via [@BotFather](https://t.me/BotFather))
+
 ## How It Works
 
-1. Pulls LaTeX projects from Overleaf via git
-2. Invokes Claude as a subagent to review each paper
-3. Sends review summaries via Telegram bot
+1. Scheduled task triggers on Claude Code cloud
+2. Agent follows `program.md` to:
+   - Pull LaTeX projects from Overleaf via git
+   - Review each paper for critical errors
+   - Send review summaries via Telegram bot
 
 ## Setup
 
-1. Copy `.env.example` to `.env` and fill in your credentials:
+1. Push this repo to GitHub
+2. Go to [claude.ai/code/scheduled](https://claude.ai/code/scheduled) and create a new scheduled task
+3. Connect this GitHub repository
+4. Configure environment variables in the cloud environment settings:
    - `OVERLEAF_TOKEN` — Overleaf git auth token
    - `PROJECT_IDS` — Comma-separated Overleaf project IDs
    - `TELEGRAM_BOT_TOKEN` — Token from @BotFather
    - `TELEGRAM_CHAT_ID` — Chat ID for notifications
-2. Ensure `claude` CLI is installed and authenticated
-3. Run: `bash run.sh`
+5. Set the schedule (e.g., daily at 9 AM)
+6. Set the task prompt to follow `program.md`
 
-## Scheduled Execution
-
-Add to crontab (`crontab -e`):
-
-```
-0 9 * * * cd /path/to/auto-paper-review && bash run.sh >> /tmp/auto-paper-review.log 2>&1
-```
+See `.env.example` for a reference of all required variables.
