@@ -45,7 +45,7 @@ Collect the results from all subagents before proceeding to Step 3.
 
 ## Step 3: Send Results via Telegram
 
-Read the environment variables `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID`.
+Read the environment variables `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`, and optionally `TELEGRAM_TOPIC_ID`.
 
 Compile all reviews into a single message using this format:
 
@@ -73,7 +73,10 @@ Send using `parse_mode=MarkdownV2`. Escape the review text per Telegram Markdown
 curl -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
   -d chat_id="${TELEGRAM_CHAT_ID}" \
   -d parse_mode=MarkdownV2 \
-  -d text="${ESCAPED_TEXT}"
+  -d text="${ESCAPED_TEXT}" \
+  ${TELEGRAM_TOPIC_ID:+-d message_thread_id="${TELEGRAM_TOPIC_ID}"}
 ```
+
+If `TELEGRAM_TOPIC_ID` is set, messages are sent to that specific forum topic. Otherwise, messages are sent to the group/chat normally (works for regular groups and the General topic in forum supergroups).
 
 Telegram has a 4096 character limit per message. If the report exceeds this, split it into multiple messages (one per project).

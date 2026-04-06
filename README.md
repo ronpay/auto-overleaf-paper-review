@@ -28,6 +28,7 @@ Runs as a [Claude Code scheduled task](https://code.claude.com/docs/en/web-sched
    - `PROJECT_IDS` — Comma-separated Overleaf project IDs
    - `TELEGRAM_BOT_TOKEN` — Token from @BotFather
    - `TELEGRAM_CHAT_ID` — Chat ID for notifications
+   - `TELEGRAM_TOPIC_ID` *(optional)* — Forum topic/thread ID for supergroups with Topics enabled
 5. Set the schedule (e.g., daily at 9 AM)
 6. Set the task prompt to follow `program.md`
 
