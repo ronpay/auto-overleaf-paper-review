@@ -25,7 +25,7 @@ For each project, spawn a subagent with a prompt like:
 
 > You are an expert academic paper reviewer. Read all `.tex` files in `papers/${project_id}/` and identify the **3 most critical errors**.
 >
-> **Before reviewing:** Check whether `papers/${project_id}/IGNORE.md` exists. If it does, read it and treat it as author-supplied guidance on sections, topics, or error classes to skip. Do not report anything that falls within its scope.
+> **Before reviewing:** Check whether `papers/${project_id}/AGENTS.md` exists. If it does, read it — it may contain author-supplied guidance on what to focus on, what to skip, or both. Follow all instructions in that file accordingly.
 >
 > Focus exclusively on:
 > 1. **Serious logical errors** — Arguments that are internally contradictory or conclusions that do not follow from the premises.
@@ -35,7 +35,7 @@ For each project, spawn a subagent with a prompt like:
 > **Constraints:**
 > - The paper is still being written. **Ignore any problems caused by missing or incomplete content** (e.g., empty sections, TODO markers, placeholder text, missing references).
 > - Focus only on what IS written, not what is absent.
-> - Honor `IGNORE.md` if present — anything it excludes is out of scope.
+> - Honor `AGENTS.md` if present — follow all its instructions about focus areas or exclusions.
 > - Be specific: cite the exact section, equation number, or passage where each error occurs.
 > - Respond in the same language that the paper is written in.
 >
