@@ -1,6 +1,6 @@
 # Auto Paper Review
 
-Automated daily review system that pulls LaTeX papers from Overleaf and uses Claude to identify critical errors (logical errors, insufficient rigor, formula mistakes). Results are sent via Telegram.
+Automated daily review system that pulls LaTeX papers from Overleaf and uses Claude to identify critical errors (logical errors, insufficient rigor, formula mistakes). Results are sent via Telegram, followed by a Chinese translation of the same report.
 
 Runs as a [Claude Code scheduled task](https://code.claude.com/docs/en/web-scheduled-tasks) — fully cloud-hosted, no local machine required.
 
@@ -15,8 +15,10 @@ Runs as a [Claude Code scheduled task](https://code.claude.com/docs/en/web-sched
 1. Scheduled task triggers on Claude Code cloud
 2. Agent follows `program.md` to:
    - Pull LaTeX projects from Overleaf via git
+   - Read each paper title from the LaTeX source, usually `main.tex`
    - Review each paper for critical errors
-   - Send review summaries via Telegram bot
+   - Send review summaries via Telegram bot using paper titles instead of Overleaf project IDs
+   - Translate the report into Chinese and send it again
 
 ## Setup
 
@@ -25,7 +27,7 @@ Runs as a [Claude Code scheduled task](https://code.claude.com/docs/en/web-sched
 3. Connect this GitHub repository
 4. Configure environment variables in the cloud environment settings:
    - `OVERLEAF_TOKEN` — Overleaf git auth token
-   - `PROJECT_IDS` — Comma-separated Overleaf project IDs
+   - `PROJECT_IDS` — Comma-separated Overleaf project IDs used for fetching papers; Telegram reports will show each paper title instead
    - `TELEGRAM_BOT_TOKEN` — Token from @BotFather
    - `TELEGRAM_CHAT_ID` — Chat ID for notifications
    - `TELEGRAM_TOPIC_ID` *(optional)* — Forum topic/thread ID for supergroups with Topics enabled

@@ -17,6 +17,11 @@ For each project ID:
 
   This is an in-memory scrub for review only — do **not** commit or push these changes back to Overleaf.
 
+After pulling each project, get the paper title:
+- First check `papers/${project_id}/main.tex` for `\title{...}`
+- If not found, search the other `.tex` files
+- Use the title in Telegram reports; if no title is found, use `${project_id}`
+
 ## Step 2: Review Each Paper
 
 Launch one **subagent per project in parallel** using the Agent tool. Each subagent receives only its own paper directory, keeping context focused.
@@ -62,7 +67,7 @@ Compile all reviews into a single message using this format:
 ```
 *Auto Paper Review — YYYY\-MM\-DD*
 
-*— Project: ${project_id} —*
+*— Paper: ${paper_title} —*
 
 *Error 1: \[Brief title\]*
 *Location*: Section/equation/line reference
@@ -73,7 +78,7 @@ Compile all reviews into a single message using this format:
 *Error 2: \[Brief title\]*
 \.\.\.
 
-*— Project: ${next_project_id} —*
+*— Paper: ${next_paper_title} —*
 \.\.\.
 ```
 
@@ -89,4 +94,12 @@ curl -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
 
 If `TELEGRAM_TOPIC_ID` is set, messages are sent to that specific forum topic. Otherwise, messages are sent to the group/chat normally (works for regular groups and the General topic in forum supergroups).
 
-Telegram has a 4096 character limit per message. If the report exceeds this, split it into multiple messages (one per project).
+Telegram has a 4096 character limit per message. If the report exceeds this, split it into multiple messages (one per paper).
+
+## Step 4: Translate and Send Chinese Report
+
+Translate the complete review message from Step 3 into Chinese and send it via Telegram again, after the original-language message has been sent.
+
+Keep the same paper titles, error numbering, locations, severity labels, and suggestions. Translate the surrounding report text and review content into natural Chinese. Preserve the MarkdownV2 structure and escape the translated text per Telegram MarkdownV2 rules before sending.
+
+If Step 3 was split into multiple Telegram messages because of the 4096 character limit, translate and send each split message in the same order.
